@@ -1,0 +1,58 @@
+;+
+; NAME:
+;		compile_trackfil
+;
+; PURPOSE:
+; 		Compiles all the trackfil IDL routines.
+;
+; CATEGORY:
+;		IDL batch file 
+;		
+; GROUP:
+;		TRACKFIL
+;
+; CALLING SEQUENCE:
+;		IDL> @compile_trackfil
+;
+; INPUTS:
+;		None. 
+;	
+; OPTIONAL INPUTS:
+;		None.	
+;
+; KEYWORD PARAMETERS:
+;		None.
+;
+; OUTPUTS:
+;		None.		
+;
+; OPTIONAL OUTPUTS:
+;		None.
+;
+; COMMON BLOCKS:
+;		None.
+;
+; SIDE EFFECTS:
+;		None.
+;
+; RESTRICTIONS:
+;		None.
+;
+; CALL:
+;		None.		
+;
+; EXAMPLE:
+;		IDL>@compile_trackfil
+;
+; MODIFICATION HISTORY:
+;		Written by:		X.Bonnin, 25-MAY-2010.
+;
+;-
+
+.compile trackfil_load_sysvar
+.compile trackfil_set_trackid
+.compile trackfil_set_refid
+.compile trackfil_pix2mcar
+.compile trackfil_set_phenom
+.compile trackfil_hfc
+

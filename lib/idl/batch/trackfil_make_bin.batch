@@ -1,0 +1,19 @@
+;IDL batch file to build an binary runtime file (.sav)
+;to run trackfil code using a command line or a script.
+;time SSW packages must be loaded before
+;running this script.
+;X.Bonnin, 15-APR-2012
+src_dir = '../src'
+aux_dir = src_dir + '/aux'
+class_dir = src_dir + '/classes'
+pathsep = path_sep(/search_path) 
+!PATH = expand_path('+'+src_dir) + pathsep + !PATH
+!PATH = expand_path('+'+aux_dir) + pathsep + !PATH
+!PATH = expand_path('+'+class_dir) + pathsep + !PATH
+cd,src_dir,current=cur_dir
+proname= ['trackfil_hfc']
+;funcname = ['sock_header']
+classname=['hfc_filaments_tracking','hfc_frc_info','hfc_fil_hqi','trackfil_config']
+resolve_all, /CONTINUE_ON_ERROR, class=classname, resolve_procedure=proname, resolve_function=funcname
+save, /ROUTINES, filename='../bin/trackfil_hfc.sav', description='Runtime IDL program to call trackfil_hfc.pro', /VERBOSE, /EMBEDDED
+cd,cur_dir
