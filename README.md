@@ -1,2 +1,23 @@
 # TrackFil
-Solar filament tracking code (TrackFil)
+
+
+
+The TrackFil software provides an algorithm to automatically track filaments on Sun images.
+
+TrackFil was initially developped in the framework of the HELIO Virtual Observatory European project (http://www.helio-vo.eu/),
+to populate its Heliophysics Feature Catalogue (HFC).
+TrackFil data results on the Meudon Spectroheliograph observations are available in the HFC web portal at: http://hfc.helio-vo.eu.
+
+
+http://dx.doi.org/10.1007/s11207-012-9985-9
+
+This directory contains the TrackFil source code, as well as scripts to
+install and configure the software.
+
+It shall store the following items:
+
+     bin      binary files (e.g., idl runtime file to launch trackfil).
+     /config   configuration files providing input parameters.
+     /scripts  scripts to run trackfil.
+     /src      code source files (written in IDL).
+     /tools    extra tools (e.g., program to train trackfil).
