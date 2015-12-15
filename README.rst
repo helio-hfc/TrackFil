@@ -17,9 +17,8 @@ install and configure the software.
 
 It shall store the following items:
 
-     /bin
-        binary files (e.g., idl runtime file to launch trackfil).
-     /config   configuration files providing input parameters.
-     /scripts  scripts to run trackfil.
+     /bin binary files (e.g., idl runtime file to launch trackfil as a script).
+     /config   configuration files providing the metadata and algorithm input parameters.
+     /scripts  scripts to set up and run trackfil.
      /src      code source files (written in IDL).
      /tools    extra tools (e.g., program to train trackfil).

@@ -1,21 +1,23 @@
 #! /bin/csh
 #
-# Script to load environment variables 
+# Script to load environment variables
 # required by TRACKFIL.
-# Must be placed in the trackfil/setup sub-directory. 
+# Create required directories if not found
+# Must be placed in the /scripts sub-directory.
 #
-# To load this script:
-# >source trackfil_setup.csh
+# Usage:
+#   source setup_trackfil.csh
 #
-# X.Bonnin, 20-JUN-2013
-
-set CURRENT_DIR=`pwd`
+# X.Bonnin, 20-NOV-2015
 
 # Define trackfil home directory
-set ARGS=($_)
-cd `dirname $ARGS[2]`/..
+
+set currentdir=`pwd`
+set args=($_)
+set scriptpath=`dirname $ARGS[2]`
+cd $scriptpath/..
 setenv TRACKFIL_HOME_DIR `pwd`
-cd $CURRENT_DIR
+cd $currentdir
 
 # Append python library path to $PYTHONPATH
 setenv PYTHONPATH "$PYTHONPATH":$TRACKFIL_HOME_DIR/lib/python/hfc
