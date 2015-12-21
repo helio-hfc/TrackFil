@@ -1,3 +1,8 @@
+FUNCTION trackfil_read_config,config_file,$
+				config_dir=config_dir,$
+				error=error,$
+				SILENT=SILENT
+
 ;+
 ; NAME:
 ;		trackfil_read_config
@@ -16,8 +21,8 @@
 ;		IDL> config_struct = trackfile_read_config(config_file)
 ;
 ; INPUTS:
-;		config_file - Name of the configuration file containing the inputs.	
-;	
+;		config_file - Name of the configuration file containing the inputs.
+;
 ; OPTIONAL INPUTS:
 ;		config_dir - Path to the directory containing the config file.
 ;
@@ -30,11 +35,11 @@
 ;							.CODE
 ;							.FEATURE_NAME
 ;							.CONTACT
-;							.REFERENCE	
+;							.REFERENCE
 ;							.OBSERVAT
 ;							.INSTRUME
 ;							.TELESCOP
-;							.			
+;							.
 ;
 ;
 ; OPTIONAL OUTPUTS:
@@ -47,10 +52,10 @@
 ;		None.
 ;
 ; RESTRICTIONS/COMMENTS:
-;		None. 
-;	
+;		None.
+;
 ; CALL:
-;		None.		
+;		None.
 ;
 ; EXAMPLE:
 ;		None.
@@ -60,11 +65,6 @@
 ;
 ;-
 
-FUNCTION trackfil_read_config,config_file,$
-					          config_dir=config_dir,$
-					   		  error=error,$
-					   		  SILENT=SILENT
-	
 ;On_error,2
 error = 1
 if (n_params() lt 1) then begin
@@ -84,7 +84,7 @@ if (keyword_set(config_dir)) then file = strtrim(config_dir[0],2) + path_sep() +
 if (~file_test(file)) then begin
 	message,/CONT,'No configuration file found!'
 	return,0
-endif	
+endif
 
 config_struct = {trackfil_config}
 ntags = n_tags(config_struct)
@@ -96,7 +96,7 @@ if (nlines ne ntags) then begin
 endif
 
 
-tags = strarr(nlines) 
+tags = strarr(nlines)
 data = strarr(nlines)
 openr,lun,file,/GET_LUN
 for i=0,nlines-1 do begin

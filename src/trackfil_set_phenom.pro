@@ -11,7 +11,7 @@ FUNCTION trackfil_set_phenom,feat_data, $
 ; PURPOSE:
 ; 		Determine the behaviour of the filaments over a rotation,
 ;       then set the phenom field of track_stc structure in consequence.
-;   
+;
 ; CATEGORY:
 ;		Image processing
 ;
@@ -34,21 +34,28 @@ FUNCTION trackfil_set_phenom,feat_data, $
 ;       /DEBUG    - Debug Mode.
 ;	/SILENT	  - Quiet mode.
 ;       /PROGRESS - Print the progress of the computation in the terminal.
-;		
+;
 ; OUTPUTS:
 ;		phenom	-	Number referring to the behaviour of the filament :
-;						0 = Normal behaviour (ie follow the rotation, 
-;							even if it bends or move at a special rate);						1 = Appearance (of the feature, nothing to do 
-;							with arriving on the visible side of the Sun!);						2 = Disappearance (of the feature, nothing to do 
-;							with leaving the visible side of the Sun);						3 = Splitting (1 features becomes 2 or more features);						4 = Merging (2 or more features become 1 or more feature);						5 = Disappearance followed by appearance of the same feature 
-;							(e.g. “disparition brusque”);						6 = Appearance following a disappearance, as above;						7 = Abnormal behaviour
-;						
+;						0 = Normal behaviour (ie follow the rotation,
+;							even if it bends or move at a special rate)
+;						1 = Appearance (of the feature, nothing to do
+;							with arriving on the visible side of the Sun!)
+;						2 = Disappearance (of the feature, nothing to do
+;							with leaving the visible side of the Sun)
+;						3 = Splitting (1 features becomes 2 or more features)
+;						4 = Merging (2 or more features become 1 or more feature)
+;						5 = Disappearance followed by appearance of the same feature
+;							(e.g. “disparition brusque”)
+;						6 = Appearance following a disappearance, as above
+;						7 = Abnormal behaviour
+;
 ;
 ; OPTIONAL OUTPUTS:
-;		error -	Equal to 1 if an error occures during the computation, 0 else.		
-;		
+;		error -	Equal to 1 if an error occures during the computation, 0 else.
+;
 ; COMMON BLOCKS:
-;		None.		
+;		None.
 ;
 ; SIDE EFFECTS:
 ;		None.
@@ -58,17 +65,17 @@ FUNCTION trackfil_set_phenom,feat_data, $
 ;
 ; CALL:
 ;		hfc_pix2hel
-;       
+;
 ;
 ; EXAMPLE:
 ;		None.
-;		
+;
 ; MODIFICATION HISTORY:
 ;		Written by:		X.Bonnin, 23-JUL-2010.
 ;
-;		02-MAR-2011, X.Bonnin:	Renamed input parameter data to feat_data, 
+;		02-MAR-2011, X.Bonnin:	Renamed input parameter data to feat_data,
 ;							    and added filename and ske_coord input parameters.
-;		30-MAR-2011, X.Bonnin:  Major update (take account of the new PHENOM definition). 
+;		30-MAR-2011, X.Bonnin:  Major update (take account of the new PHENOM definition).
 ;
 ;-
 
@@ -80,7 +87,16 @@ FUNCTION trackfil_set_phenom,feat_data, $
 ;[1]:===============================
 
 error = 1
-if (n_params() lt 1) then message,'Incorrect number of input arguments!'
+if (n_params() lt 1) then begin
+    message,/INFO,'Usage:'
+    print,'trackfil_set_phenom, feat_data, $'
+    print,'                                      lmin=lmin,hg_long_lim=hg_long_lim, $'
+    print,'                                      error=error, $'
+    print,'                                      /DEBUG,/SILENT, $'
+    print,'                                      /PROGRESS'
+    return
+endif
+
 if (size(feat_data,/TNAME) ne 'STRUCT') then message,'FEAT_DATA input parameter must be an IDL structure!'
 
 if not (keyword_set(lmin)) then lmin = 0. else lmin = float(lmin[0])
@@ -112,7 +128,7 @@ for i=0L,nfeat-1L do begin
    if (PROGRESS) then printl,'Computation completed: '+$
                              string(100.*(i+1L)/float(nfeat),format='(f6.2)')+'%'
 
-    if (data(i).ske_length_deg lt lmin) then continue    
+    if (data(i).ske_length_deg lt lmin) then continue
 
 	date_i = data(i).date_obs
 	jd_i = jd[i]
@@ -127,16 +143,16 @@ for i=0L,nfeat-1L do begin
     ieq = (where(date_i eq datelist))[0]
 	ilt = where(jd lt jd_i and track_i eq data.track_id,nlt)
     igt = where(jd gt jd_i and track_i eq data.track_id,ngt)
-    
+
     lon0 = -999. & lon1 = -999.
     if (ilt[0] eq -1) and (igt[0] eq -1) then continue
-    
+
     ;If filament is not observed on previous observations...
     if (ilt[0] eq -1) then begin
 			;If current observation is not the first then...
 			if (jd_i gt jdmin) then begin
-				;Compute predictable filament heliographic longitude 
-				;on the previous observation 
+				;Compute predictable filament heliographic longitude
+				;on the previous observation
 				lon0 = (jdlist[ieq-1l] - jd_i)*(14.48 - 2.16*(sin(lat_i/!radeg))^2) + lon_i
                 ;If filament should be seen on the preceding image according to its predictable longitude,
                 ;then appareance after East limb.
@@ -151,8 +167,8 @@ for i=0L,nfeat-1L do begin
     if (igt[0] eq -1) then begin
 			;If current observation is not the last then...
 			if (jd_i lt jdmax) then begin
-				;Compute predictable filament heliographic longitude 
-				;on the next observation 
+				;Compute predictable filament heliographic longitude
+				;on the next observation
 				lon1 = (jdlist[ieq+1l] - jd_i)*(14.48 - 2.16*(sin(lat_i/!radeg))^2) + lon_i
                 ;If filament should be seen on the following image according to its predictable longitude,
                 ;then disappareance before West limb

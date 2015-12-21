@@ -1,4 +1,4 @@
-;Run tracking code 
+;Run tracking code for HFC
 
 ;additional options
 NEW_TRACKING=0
@@ -21,14 +21,14 @@ output_dir = '../products'
 config_dir = '../config'
 src_dir = '../src'
 
-pathsep = PATH_SEP(/SEARCH_PATH) 
+pathsep = PATH_SEP(/SEARCH_PATH)
 !PATH = expand_path('+'+src_dir) + pathsep + !PATH
 !PATH = expand_path('+'+src_dir+'/aux') + pathsep + !PATH
 !PATH = expand_path('+'+src_dir+'/classes') + pathsep + !PATH
 
-@compile_trackfil
+@compile_trackfil4hfc
 
-trackfil_hfc,config_file, $
+trackfil4hfc,config_file, $
 	     starttime=starttime, $
 	     endtime=endtime, $
 	     config_dir=config_dir, $

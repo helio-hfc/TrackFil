@@ -2,13 +2,13 @@
 #
 # PURPOSE:
 # Script to load environment variables
-# required by TRACKFIL and
+# required by TRACKFIL4HFC and
 # build bin file
 # Create required directories if not found
-# Must be placed in the scripts/ sub-directory.
+# Must be placed in the hfc/scripts sub-directory.
 #
 # USAGE:
-#   source setup_trackfil.csh
+#   source setup_trackfil4hfc.csh
 #
 # RESTRICTIONS/COMMENTS:
 #  be sure to have SolarSoft (SSW) ready to be
@@ -29,8 +29,8 @@ endif
 cd $scriptpath
 
 # Load Trackfil4hfc env. variables
-csh -f setup_trackfil_env.csh
+csh -f setup_trackfil4hfc_env.csh
 
-sswidl -e @trackfil_make_bin
+sswidl -e @trackfil4hfc_make_bin
 
 cd $currentdir

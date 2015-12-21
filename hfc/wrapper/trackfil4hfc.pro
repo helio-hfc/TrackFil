@@ -1,4 +1,4 @@
-PRO trackfil_hfc,config_file,$
+PRO trackfil4hfc,config_file,$
                  starttime=starttime,endtime=endtime, $
                  database=database,host=host,server=server,$
                  user=user,password=password, $
@@ -12,11 +12,11 @@ PRO trackfil_hfc,config_file,$
 
 ;+
 ; NAME:
-;		trackfil_hfc
+;		trackfil4hfc
 ;
 ; PURPOSE:
 ; 		This routine performs the tracking of solar filaments
-;		stored in the Heliophysics Feature Catalogue (HFC) using 
+;		stored in the Heliophysics Feature Catalogue (HFC) using
 ;		a curve matching algorithm on the skeletons.
 ;		More information about the method can be found in:
 ;		Bonnin et al., Solar Physics, 2012.
@@ -28,12 +28,12 @@ PRO trackfil_hfc,config_file,$
 ;		TRACKFIL
 ;
 ; CALLING SEQUENCE:
-;		IDL> trackfil_hfc,config_file,starttime=starttime,endtime=endtime
+;		IDL> trackfil4hfc,config_file,starttime=starttime,endtime=endtime
 ;
 ; INPUTS:
 ;		config_file - Scalar of string type providing the full path to the
-;					  configuration file. This file contains inputs for the code. 	
-;	
+;					  configuration file. This file contains inputs for the code.
+;
 ; OPTIONAL INPUTS:
 ;		starttime  - First date and time of the time range to process (ISO 8601 date format).
 ;					 Default is endtime - 60 days.
@@ -50,41 +50,41 @@ PRO trackfil_hfc,config_file,$
 ;		password   - Corresponding password.
 ;					 Default is 'guest'.
 ;		config_dir - Directory where the configuration file is stored.
-;		output_dir - Scalar of string type specifying the path to the directory 
+;		output_dir - Scalar of string type specifying the path to the directory
 ;					 where output files will be saved (use current one by default).
 ;
 ; KEYWORD PARAMETERS:
 ;		/NEW_TRACKING	     - Run program without take account of previous tracking data
-;					 	       in the HFC database. 
-;							   If /ALL is set, all the filaments are used.    
+;					 	       in the HFC database.
+;							   If /ALL is set, all the filaments are used.
 ;        /WRITE_CSV           - Write output csv format file containg tracking results.
 ;                              Parameters returned are the same than those in the FILAMENTS_TRACKING HFC table.
 ;       /WRITE_PNG           - Write PNG images containing Carrington map with tracking results.
 ;		/WRITE_LOG			 - Write log file.
-;		/VERBOSE			 - Talkative mode. 	
+;		/VERBOSE			 - Talkative mode.
 ;       /DEBUG               - Debug mode.
 ;       /NULL_PLOT           - If set then do set_plot,'null' (avoid plot).
 ;
 ; OUTPUTS:
-;		None.		
+;		None.
 ;
 ; OPTIONAL OUTPUTS:
 ;		hfc_struct - Structure containing the tracking information.
 ;
-; COMMON BLOCKS:		
-;		None.	
-;	
+; COMMON BLOCKS:
+;		None.
+;
 ; SIDE EFFECTS:
 ;		None.
 ;
 ; RESTRICTIONS/COMMENTS:
 ;		An internet access must be available in order to query the HFC.
-;		
+;
 ; CALL:
 ;		trackfil_read_config
-;		trackfil_hfc_struct
+;		track_hfc_struct
 ;		trackfil_query_hfc
-;		trackfil_pix2mcar		
+;		trackfil_pix2mcar
 ;		trackfil_set_trackid
 ;		trackfil_set_refid
 ;		trackfil_set_phenom
@@ -93,30 +93,30 @@ PRO trackfil_hfc,config_file,$
 ;		jd2str
 ;
 ; EXAMPLE:
-;		;Perform tracking for the filaments detected between 
+;		;Perform tracking for the filaments detected between
 ;		;January 1st, 2001 at 08:00:00, and December 31th, 2002 at 22:00:00:
-;		trackfil_hfc,'../config/trackfil_mh_config.txt',starttime='2001-01-01T08:00:00',$
-;                                 endtime='2002-12-31T22:00:00'	
+;		trackfil4hfc,'../config/trackfil_mh_config.txt',starttime='2001-01-01T08:00:00',$
+;                                 endtime='2002-12-31T22:00:00'
 ;
 ; MODIFICATION HISTORY:
 ;		Written by:		X.Bonnin, 25-MAY-2010.
-; 
+;
 ; Version 1.00
-;		01-MAR-2011, X.Bonnin:	First release.	
+;		01-MAR-2011, X.Bonnin:	First release.
 ;
 ; Version 1.1
 ;		31-MAR-2011, X.Bonnin:	Added tracking_set_refid routine.
-;								Renamed tracking_pix2car into tracking_pix2mcar, 
-;								which only calculates the modified carrington 
-;								coordinates of the filament skeletons. 	
+;								Renamed tracking_pix2car into tracking_pix2mcar,
+;								which only calculates the modified carrington
+;								coordinates of the filament skeletons.
 ; Version 1.2
 ;		05-MAY-2011, X.Bonnin:	trackfil_set_trackid routine can now track smaller
-;								filaments (i.e. ske_len_deg < !LMIN), which are 
-;								not taken account by the 
+;								filaments (i.e. ske_len_deg < !LMIN), which are
+;								not taken account by the
 ;								curve matching algorithm.
-;								Added /NEW_TRACKING keyword.	
+;								Added /NEW_TRACKING keyword.
 ; Version 2.0
-;		06-JUN-2011, X.Bonnin:  The HFC database login information are now provided 
+;		06-JUN-2011, X.Bonnin:  The HFC database login information are now provided
 ;								in the input parameter hfc_login.
 ;
 ; Version 2.1
@@ -127,9 +127,10 @@ PRO trackfil_hfc,config_file,$
 ;		30-JAN-2012, X.Bonnin:	Added command line execution capability.
 ;					Loops on files removed.
 ;
-version = '2.20'	
-;-			 
-			 
+version = '2.21'
+;           21-DEC-2015, X.Bonnin: Renamed to trackfil4hfc
+;-
+
 ;[1]:Initializing software
 ;[1]:=============================
 ;Starting Time
@@ -161,9 +162,9 @@ if (args[0] ne '') then begin
    endfor
 endif else begin
    if (n_params() lt 1) then begin
-      message,/INFO,'Call is: trackfil_hfc,config_file,$'
+      message,/INFO,'Call is: trackfil4hfc,config_file,$'
       print,'                              starttime=starttime, $'
-      print,'                              endtime=endtime, $'	
+      print,'                              endtime=endtime, $'
       print,'                              database=database, $'
       print,'                              host=host,server=server, $'
       print,'                              user=user,password=password, $'
@@ -173,7 +174,7 @@ endif else begin
       print,'                              /NEW_TRACKING,$'
       print,'                              /WRITE_LOG, $'
       print,'                              /WRITE_CSV,/WRITE_PNG, $'
-      print,'                              /VERBOSE,/DEBUG,/NULL_PLOT' 
+      print,'                              /VERBOSE,/DEBUG,/NULL_PLOT'
       return
    endif
 endelse
@@ -183,7 +184,7 @@ spawn,'hostname',hostname
 
 ;Current date
 run_date = (strsplit(anytim(!stime,/CCSDS),'.',/EXTRACT))[0]
-print,'Starting trackfil_hfc on '+hostname+' ('+run_date+')'
+print,'Starting trackfil4hfc on '+hostname+' ('+run_date+')'
 
 print,'Initializing inputs...'
 ;Setting keywords
@@ -202,7 +203,7 @@ if (NULL) then set_plot,'NULL'
 if (VERBOSE) then begin
    if (NEW_TRACKING) then print,'/NEW_TRACKING option is set.'
    if (WRITE_CSV) then print,'/WRITE_CSV option is set.'
-   if (WRITE_LOG) then print,'/WRITE_LOG option is set.'   
+   if (WRITE_LOG) then print,'/WRITE_LOG option is set.'
    if (WRITE_PNG) then print,'/WRITE_PNG option is set.'
    if (VERBOSE) then print,'/VERBOSE option is set.'
    if (DEBUG) then print,'/DEBUG option is set.'
@@ -236,7 +237,7 @@ etime = strjoin(strsplit(etime,'T',/EXTRACT),' ')
 
 if (not keyword_set(database)) then database = 'hfc1'
 if (not keyword_set(server)) then server = 'voparis-helio.obspm.fr'
-if (not keyword_set(host)) then host = 'voparis-mysql5-paris.obspm.fr' 
+if (not keyword_set(host)) then host = 'voparis-mysql5-paris.obspm.fr'
 if (not keyword_set(user)) then user = 'guest'
 if (not keyword_set(password)) then password = 'guest'
 
@@ -251,11 +252,11 @@ print,'Reading configuration file '+cpath+'...'
 inp_stc = trackfil_read_config(cpath)
 if (size(inp_stc,/TNAME) ne 'STRUCT') then message,'ERROR: Cannot read configuration file!'
 print,'Reading configuration file '+cpath+'...done'
- 
+
 print,'Initializing inputs...done'
 ;[1]:=============================
 
-;[2]:Loading HFC data 
+;[2]:Loading HFC data
 ;[2]:=========================
 print,'Loading filament data from HFC...'
 ;Loading HFC data
@@ -267,7 +268,7 @@ hfc_stc = hfc_stilts_client('VIEW_FIL_HQI',starttime=trange[0],$
                             password=password,/STRUCT,VERBOSE=VERBOSE)
 if (size(hfc_stc,/TNAME) ne 'STRUCT') then message,'ERROR: Cannot load data from HFC!'
 nfeat = n_elements(hfc_stc)
-if (DEBUG) then begin 
+if (DEBUG) then begin
    help,hfc_stc,/STR
    stop
 endif
@@ -283,7 +284,7 @@ hfc_stc.phenom = -1
 hfc_stc.track_lvl_trust = 0
 if (NEW_TRACKING) then begin
    hfc_stc.track_id = hfc_stc.id_fil
-   hfc_stc.ref_feat = -1		
+   hfc_stc.ref_feat = -1
 endif
 
 date_obs = hfc_stc.date_obs
@@ -305,7 +306,7 @@ if (VERBOSE) then print,strtrim(nfeat,2)+' filaments extracted to track on '+str
 print,'Loading filament data from HFC...done'
 ;[2]:=================================
 
-;[3]:Compute the Modified Carrington coordinates of filaments 
+;[3]:Compute the Modified Carrington coordinates of filaments
 ;[3]:========================================================
 print,'Calculating filaments coordinates...'
 trackfil_pix2mcar,hfc_stc,ske_stc,ds=inp_stc.ds,error=error,SILENT=SILENT,PROGRESS=DEBUG
@@ -378,7 +379,7 @@ if (WRITE_CSV) then begin
         track_stc_i.fil_id = hfc_stc(iw).id_fil
         track_stc_i.phenom = hfc_stc(iw).phenom
         track_stc_i.ref_feat = hfc_stc(iw).ref_feat
-        track_stc_i.lvl_trust = hfc_stc(iw).track_lvl_trust    
+        track_stc_i.lvl_trust = hfc_stc(iw).track_lvl_trust
         track_stc_i.track_filename = tr_locfname_i
         track_stc_i.run_date = run_date
         track_stc_i.feat_filename = hfc_stc(iw).feat_filename
@@ -386,11 +387,11 @@ if (WRITE_CSV) then begin
         track_path = outdir + path_sep() + tr_locfname_i[0]
         hfc_write_csv,track_stc_i,track_path
         if (DEBUG) then print,strtrim(nfile-i,2)+': '+track_path+' saved.'
-    endfor    
+    endfor
 endif
 
 if (WRITE_PNG) then begin
-    loadct,39,/SILENT   
+    loadct,39,/SILENT
     tvlct,r,g,b,/GET
     mincar = min(ske_stc.Xcarr[0],max=maxcar,/NAN)
     ncarr = round((maxcar - mincar)/360.) + 1
@@ -415,15 +416,15 @@ if (WRITE_PNG) then begin
             lat_j = ske_stc(iw[j]).Xcarr[1]
             X_j = (round(lon_j - cmin_i)/dX)>(0)<(nX-1)
             Y_j = (round(lat_j + 90.)/dY)>(0)<(nY-1)
-            col_track = (20l*hfc_stc((where(ske_stc(iw[j]).index eq hfc_stc.id_fil))[0]).track_id) + 24l 
+            col_track = (20l*hfc_stc((where(ske_stc(iw[j]).index eq hfc_stc.id_fil))[0]).track_id) + 24l
             img[X_j,Y_j] = byte(col_track)
         endfor
         img = rebin(img,nX*2,nY*2)
-        png_file = 'trackfil_hfc_carr'+strtrim(carrot0 + i,2)+'_results.png'
+        png_file = 'trackfil4hfc_carr'+strtrim(carrot0 + i,2)+'_results.png'
         png_path = outdir + path_sep() + png_file
-        write_png,png_path,img,r,g,b        
+        write_png,png_path,img,r,g,b
         if (DEBUG) then print,strtrim(ncarr-i,2)+': '+png_path+' saved.'
-    endfor    
+    endfor
 endif
 if (DEBUG) then stop
 ;[5]:==================
