@@ -20,16 +20,28 @@ install and configure the software.
 
 It stores the following items:
 
+::
+
      bin/           binary files (e.g., idl runtime file to launch trackfil as a script).
+     
      config/      configuration files providing the metadata and algorithm input parameters.
+     
      data/         can be used to store input data files.
+     
      hfc/           contains the wrapper for the HFC
+     
      lib/            contains external libraries required to run trackfil
+     
      logs/         can be used to store log file
+     
      products/ can be used to store trackfil data products
+     
      scripts/     scripts to set up and run trackfil.
+     
      src/           code source files (written in IDL).
+     
      tmp/          can be used to store temporary files
+     
      tools/        extra tools (e.g., program to train trackfil).
 
 Installation
@@ -50,7 +62,9 @@ How to get Trackfil
 
 You can download the TrackFil package from Github, entering:
 
-    git https://github.com/HELIO-HFC/TrackFil.git
+::
+
+    git clone https://github.com/HELIO-HFC/TrackFil.git
 
 This will create a local "TrackFil" directory containing the TrackFil software.
 
@@ -63,6 +77,8 @@ Before set up and run Trackfil, be sure that SSW can be loaded in IDL using the 
 
 Then, enter:
 
+::
+
     source scripts/setup_trackfil.csh
 
 If everything goes right, it should create a "trackfil.sav" file in the bin/ subdirectory.
@@ -72,11 +88,15 @@ How to run Trackfil
 
 Open a IDL interpreter session, then enter:
 
+::
+
     restore,'bin/trackfil.sav',/VERBOSE
 
 This will loaded all of the Trackfil compiled routines.
 
 The Trackfil main program is called "trackfil". Enter "trackfil" in the interpreter should return something like:
+
+::
 
     % TRACKFIL: Usage:
     Results = trackfil(fil_data, config_file=config_file, /SILENT)
