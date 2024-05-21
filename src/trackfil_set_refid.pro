@@ -87,7 +87,7 @@ if (n_params() lt 2) then begin
     print,'                               output_param=output_param, $'
     print,'                               error=error,/SILENT,$'
     print,'                               /PROGRESS'
-    return
+    return, !Values.F_NAN
 endif
 if (size(feat_data,/TNAME) ne 'STRUCT') then message,'FEAT_DATA input parameter must be an IDL structure!'
 if (size(ske_data,/TNAME) ne 'STRUCT') then message,'SKE_DATA input parameter must be an IDL structure!'

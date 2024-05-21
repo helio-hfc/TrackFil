@@ -10,20 +10,11 @@
 #
 # X.Bonnin, 20-NOV-2015
 
-# Define trackfil home directory
+# Check if $TRACKFIL_HOME_DIR environment variable is defined
 
 if ( -z "$TRACKFIL_HOME_DIR ") then
-    set currentdir=`pwd`
-    set sourced=($_)
-    if ("$sourced" != "") then
-        set scriptpath=`dirname $sourced[2]`
-    endif
-    if ("$0" != "tcsh") then
-        set scriptpath=`dirname $0`
-    endif
-    cd $scriptpath/..
-    setenv TRACKFIL_HOME_DIR `pwd`
-    cd $currentdir
+    echo "$TRACKFIL_HOME_DIR is not defined, exit!"
+    exit 1
 endif
 
 # Append idl library path to $IDL_PATH

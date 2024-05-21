@@ -97,7 +97,7 @@ if (n_params() lt 2) then begin
              print,'                                   /CURVE_ONLY, $'
              print,'                                   /CLOSE_ONLY, $'
              print,'                                   /SILENT, / PROGRESS$'
-             return
+             return, !Values.F_NAN
 endif
 if (size(feat_data,/TNAME) ne 'STRUCT') then message,'FEAT_DATA input parameter must be a structure!'
 if (size(ske_data,/TNAME) ne 'STRUCT') then message,'SKE_DATA input parameter must be a structure!'

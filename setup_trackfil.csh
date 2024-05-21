@@ -16,21 +16,12 @@
 #
 # X.Bonnin, 20-NOV-2015
 
-# Get script dir
-set currentdir=`pwd`
-set sourced=($_)
-
-if ("$sourced" != "") then
-    set scriptpath=`dirname $sourced[2]`
-endif
-if ("$0" != "tcsh") then
-    set scriptpath=`dirname $0`
-endif
-cd $scriptpath
+# Define $TRACKFIL_HOME_DIR env. variable
+setenv TRACKFIL_HOME_DIR `pwd`
 
 # Load Trackfil4hfc env. variables
-csh -f setup_trackfil_env.csh
+csh -f $TRACKFIL_HOME_DIR/scripts/setup_trackfil_env.csh
 
+cd scripts/
 sswidl -e @trackfil_make_bin
-
-cd $currentdir
+cd $TRACKFIL_HOME_DIR

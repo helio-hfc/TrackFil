@@ -94,7 +94,7 @@ if (n_params() lt 1) then begin
     print,'                                      error=error, $'
     print,'                                      /DEBUG,/SILENT, $'
     print,'                                      /PROGRESS'
-    return
+    return, !Values.F_NAN
 endif
 
 if (size(feat_data,/TNAME) ne 'STRUCT') then message,'FEAT_DATA input parameter must be an IDL structure!'

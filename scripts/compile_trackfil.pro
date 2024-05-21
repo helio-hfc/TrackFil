@@ -1,5 +1,5 @@
 .compile trackfil_config__define
-.compile trackfil_intersect
+;.compile trackfil_intersect
 .compile trackfil_load_sysvar
 .compile trackfil_pix2mcar
 .compile trackfil_read_config

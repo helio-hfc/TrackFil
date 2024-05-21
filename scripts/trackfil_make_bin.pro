@@ -13,8 +13,10 @@ pathsep = path_sep(/search_path)
 !PATH = expand_path('+'+src_dir) + pathsep + !PATH
 !PATH = expand_path('+'+lib_dir) + pathsep + !PATH
 binfile = trackfil_home_dir + sep + 'bin' + sep +'trackfil.sav'
+FILE_MKDIR, trackfil_home_dir + sep + 'bin'
 
 @compile_trackfil
+
 
 cd,src_dir,current=cur_dir
 proname= ['trackfil']

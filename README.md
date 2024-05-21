@@ -1,68 +1,64 @@
 About TrackFil
-============
+==============
 
 The TrackFil software provides an algorithm to automatically track filaments on Sun images.
 
-TrackFil was initially developped in the framework of the HELIO Virtual Observatory European project (http://www.helio-vo.eu/),
-to populate its Heliophysics Feature Catalogue (HFC).
-TrackFil data results on the Meudon Spectroheliograph observations are available in the HFC web portal at: http://hfc.helio-vo.eu.
+TrackFil was initially designed to work with the solar filaments detected by the Fuller et al., 2005 method (10.1007/s11207-005-8364-1) on the Meudon Spectroheliograph Halpha observations. Nevertheless the algorithm can be easily adapted to be applied with other datasets.
 
-The software algorithm is described in details in: http://dx.doi.org/10.1007/s11207-012-9985-9.
+TrackFil data results on the Meudon Spectroheliograph observations are available in the Heliophysics Feature Catalog (HFC) Web portal at: http://hfc.helio-vo.eu.
 
-Note that TrackFil software assumes that the solar filaments to be tracked have been previously detected.
-For instance, the HFC filaments are detected using the Fuller et al., 2005 alogorithm (see 10.1007/s11207-005-8364-1).
+A description of the TrackFil algorithm can be found in Bonnin et al, 2012 (http://dx.doi.org/10.1007/s11207-012-9985-9).
+
+Trackfil was developped in the framework of the HELIO Virtual Observatory European project (http://www.helio-vo.eu/),
 
 Content
-======
+=======
 
 The TrackFil package contains the TrackFil source code, as well as scripts to
 install and configure the software.
 
 It stores the following items:
 
-::
-
-     bin/           binary files (e.g., idl runtime file to launch trackfil as a script).
+     bin/           binary files (e.g., idl runtime file to launch trackfil as a script). The directory will be created during the installation if it does not exist initially.
      
      config/      configuration files providing the metadata and algorithm input parameters.
      
-     data/         can be used to store input data files.
+     data/              can be used to store input data files
      
-     hfc/           contains the wrapper for the HFC
+     hfc/               contains the wrapper for the HFC
      
-     lib/            contains external libraries required to run trackfil
+     lib/               contains external libraries required to run trackfil
      
-     logs/         can be used to store log file
+     logs/              can be used to store log file
      
-     products/ can be used to store trackfil data products
+     products/          can be used to store trackfil data products
      
-     scripts/     scripts to set up and run trackfil.
+     scripts/           scripts to set up and run trackfil
      
-     src/           code source files (written in IDL).
+     setup_trackfil.csh main (t)csh script to set up TrackFil locally
+
+     src/               code source files (written in IDL).
      
-     tmp/          can be used to store temporary files
+     tmp/               can be used to store temporary files
      
-     tools/        extra tools (e.g., program to train trackfil).
+     tools/             extra tools (e.g., program to train trackfil).
 
 Installation
-=========
+============
 
 System requirements
 ------------------------------
 
 Trackfil requires IDL 7.0 or higher.
 
-The main SolarSoft (SSW) package shall be also installed and callable on your system.
-(Visit http://www.lmsal.com/solarsoft/ for more details).
+The core of SolarSoft (SSW) package shall be also installed and callable on your system. Visit http://www.lmsal.com/solarsoft/ to install and configure SSW.
 
-Trackfil can only by run using the (t)csh shell.
+Trackfil works only with the (t)csh shell.
 
 How to get Trackfil
 ------------------------------
 
-You can download the TrackFil package from Github, entering:
-
-::
+From a terminal you can download the TrackFil package from Github by entering:
 
     git clone https://github.com/HELIO-HFC/TrackFil.git
 
@@ -70,25 +66,21 @@ This will create a local "TrackFil" directory containing the TrackFil software.
 
 *In the next sections, all of the commands are executed assuming you are in the TrackFil/ directory.*
 
-How to set up Trackfil
+How to set up Trackfil?
 ------------------------------
 
-Before set up and run Trackfil, be sure that SSW can be loaded in IDL using the "sswidl" command.
+Before installing and running Trackfil, be sure that SSW can be called in the terminal using the "sswidl" command.
 
 Then, enter:
 
-::
-
-    source scripts/setup_trackfil.csh
+    source setup_trackfil.csh
 
 If everything goes right, it should create a "trackfil.sav" file in the bin/ subdirectory.
 
-How to run Trackfil
+How to run Trackfil?
 ------------------------------
 
 Open a IDL interpreter session, then enter:
-
-::
 
     restore,'bin/trackfil.sav',/VERBOSE
 
@@ -96,14 +88,12 @@ This will loaded all of the Trackfil compiled routines.
 
 The Trackfil main program is called "trackfil". Enter "trackfil" in the interpreter should return something like:
 
-::
-
     % TRACKFIL: Usage:
     Results = trackfil(fil_data, config_file=config_file, /SILENT)
 
 
 About the TrackFil algorithm
-======================
+============================
 
 Context
 ------------
@@ -122,8 +112,7 @@ The TrackFil algorithm actually combines two tracking algorithms in one:
 
     - A close position algorithm, used to track the smaller filaments and to filter too farest features.
 
-    - A curve matching algorithm, which performs a morphological analysis of filaments,
-     to identify the same feature between two observations.
+    - A curve matching algorithm, which performs a morphological analysis of filaments, to identify the same feature between two observations.
 
 Both algorithms are computed on a Modified Carrington (MC) map, where filaments' centroids are quasi-static relative to the time and space.
 
@@ -140,7 +129,7 @@ The curve matching algorithm
 The *curve matching algorithm* (CM) use a least-square method to compare the shape of two filament skeletons. It returns a probability that the two skeletons have the same shape. This probability serves as a basis to define the confidence of tracking.
 
 About the *trackfil* procedure
-=======================
+==============================
 
 This *trackfil* IDL procedure in the src/ directory is the main TrackFil program.
 
