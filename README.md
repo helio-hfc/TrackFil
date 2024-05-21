@@ -164,7 +164,7 @@ Two main input arguments are required to run "trackfil":
     - ref_id                    Index of filaments for a solar rotation to the next
 
 Configuration file
-..............................
+-----------------------
 
 The TrackFil configuration file is a simple text file with *key = value* pairs - one pair per row - providing the value of the Trackfil algorithm parameters to be used.
 
